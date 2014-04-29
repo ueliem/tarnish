@@ -9,5 +9,6 @@ install:
   - cd lib/rust-http
   - ./configure
   - make
+  - cd ../..
 script:
   - make build
