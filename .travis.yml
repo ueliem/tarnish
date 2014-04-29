@@ -1,0 +1,6 @@
+language: rust
+compiler:
+  - rustc
+  - clang
+# Change this to your needs
+script: make build
