@@ -12,6 +12,8 @@ use std::io::Writer;
 use http::server::{Config, Server, Request, ResponseWriter};
 use http::headers::content_type::MediaType;
 
+mod Urlparse;
+
 #[deriving(Clone)]
 struct RustServer {
 	pub portnum: u16,
@@ -33,7 +35,7 @@ impl Server for RustServer {
         });
         w.headers.server = Some(StrBuf::from_str("Example"));
 
-        let parseout = ::Urlparse::urlparse(_r.request_uri.to_str());//Split the URL properly, then compare path to routes.
+        let parseout = Urlparse::urlparse(_r.request_uri.to_str());//Split the URL properly, then compare path to routes.
 		w.write(parseout.path.to_str().as_bytes()).unwrap();
 		println!("{}", _r.request_uri);
     }
@@ -44,22 +46,6 @@ impl RustServer {
 		//Set port/settings, then begin the server.
 		//self.portnum = portnum;
 		self.serve_forever();
-	}
-}
-
-mod Urlparse {
-	pub struct UrlParseResult {
-		pub scheme: ~str,
-		pub authority: ~str,
-		pub path: ~str,
-		pub query: ~str,
-		pub fragment: ~str
-	}
-	pub fn urlparse(urlstr: &str) -> UrlParseResult {//http://stackoverflow.com/questions/6168260/how-to-parse-a-url
-		//Index 5 can then be matched against the routes to choose what/how to serve.
-		let re = regex!(r"^(([^:/?#]+):)?(//([^/?#]*))?([^?#]*)(\?([^#]*))?(#(.*))?");
-		let cap = re.captures(urlstr).unwrap();
-		return UrlParseResult{scheme: cap.at(2).to_owned(), authority: cap.at(4).to_owned(), path: cap.at(5).to_owned(), query: cap.at(7).to_owned(), fragment: cap.at(9).to_owned()};
 	}
 }
 
