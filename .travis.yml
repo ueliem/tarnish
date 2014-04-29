@@ -1,5 +1,10 @@
 language: rust
 compiler:
   - rustc
-# Change this to your needs
-script: make build
+before_install:
+  - yes | sudo add-apt-repository ppa:hansjorg/rust
+  - sudo apt-get update
+install:
+  - sudo apt-get install rust-nightly
+script:
+  - make build
