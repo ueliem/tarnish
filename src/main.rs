@@ -36,7 +36,9 @@ impl Server for RustServer {
         w.headers.server = Some(StrBuf::from_str("Example"));
 
         let parseout = Urlparse::urlparse(_r.request_uri.to_str());//Split the URL properly, then compare path to routes.
+		w.headers.content_length = Some(parseout.path.to_str().as_bytes().len());
 		w.write(parseout.path.to_str().as_bytes()).unwrap();
+		println!("{}", parseout.path.to_str().as_bytes().len());
 		println!("{}", _r.request_uri);
     }
 }
