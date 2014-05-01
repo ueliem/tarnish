@@ -2,8 +2,6 @@ test:
 	echo "testing..."
 build:
 	mkdir -p bin
-	rustc src/main.rs -o bin/main -L lib/rust-http/build/
+	rustc src/lib.rs -L lib/rust-http/build/ --out-dir bin/
 clean:
 	rm -rf bin/*
-make run:
-	./bin/main

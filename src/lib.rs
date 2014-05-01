@@ -1,3 +1,8 @@
+#![crate_id = "tarnish"]
+#[desc = "Tarnish, a web framework."];
+#![crate_type = "dylib"]
+#![crate_type = "rlib"]
+
 #![feature(phase)]
 #[phase(syntax)]
 extern crate regex_macros;
@@ -15,7 +20,7 @@ use http::headers::content_type::MediaType;
 mod Urlparse;
 
 #[deriving(Clone)]
-struct RustServer {
+pub struct RustServer {
 	pub portnum: u16,
 }
 
@@ -49,9 +54,4 @@ impl RustServer {
 		//self.portnum = portnum;
 		self.serve_forever();
 	}
-}
-
-fn main() {
-	let serv = RustServer{portnum: 8001};
-	serv.start();
 }
