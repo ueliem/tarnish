@@ -6,13 +6,15 @@ use http::headers::content_type::MediaType;
 
 use time;
 use Urlparse;
+use router;
 
 #[deriving(Clone)]
-pub struct RustServer {
+pub struct RustServer<'r> {
     pub portnum: u16,
+    pub router: router::RustRouter,
 }
 
-impl Server for RustServer {
+impl<'r> Server for RustServer<'r> {
     fn get_config(&self) -> Config {
         Config { bind_address: SocketAddr { ip: Ipv4Addr(127, 0, 0, 1), port: self.portnum } }//This line confused me inititally. This is an override.
         //Thus on a call, within the server_forever, this gives the port to start the sever listening on.
@@ -36,8 +38,8 @@ impl Server for RustServer {
     }
 }
 
-impl RustServer {
-    pub fn start(&self) {
+impl<'r> RustServer<'r> {
+    pub fn start<'r>(&self) {
         //Set port/settings, then begin the server.
         //self.portnum = portnum;
         self.serve_forever();
